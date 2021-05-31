@@ -1,0 +1,14 @@
+body, html {  
+    background-color: #4e4f50 !important;
+} 
+
+#entries{
+    height: 650px !important;
+    overflow: scroll;
+}
+.tag .is-link{
+    cursor: pointer;
+}
+#entries::-webkit-scrollbar {
+    display: none;
+}

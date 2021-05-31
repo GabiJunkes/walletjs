@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WalletJs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+  </head>
+  <body>
+
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <button onclick="location='cripto.html'" class="button is-small is-ghost has-text-white">
+            Cripto
+          </button>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <button onclick="closeApp()" class="button is-small is-ghost has-text-white">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container is-fluid">
+
+      <div class="level is-mobile">
+        <div class="level-left">
+            <div class="level-item has-text-left ml-2">
+                <div>
+                  <p class="title has-text-white">Wallet</p>
+                  <p id="totalReal" class="heading ml-1 has-text-white">R$0.00</p>
+                </div>
+              </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <div>
+                    <button onclick="openModal(0, 'addEntry')" class="button is-ghost">Add entry</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div id="entries">
+      </div>
+      
+    </div>
+
+
+    <div id="modal"class="modal pl-5 pr-5">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="tituloModal" class="modal-card-title"></p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section id="contModal" class="modal-card-body">
+        </section>
+        <footer id="footModal" class="modal-card-foot">
+        </footer>
+      </div>
+    </div>
+
+    <script src="js/neutralino.js"></script>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  </body>
+</html>
