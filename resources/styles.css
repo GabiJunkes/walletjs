@@ -12,3 +12,35 @@ body, html {
 #entries::-webkit-scrollbar {
     display: none;
 }
+.tag{
+    position: relative;
+    top: -17px;
+}
+.subtitle.is-7{
+    position: relative;
+    top: -5px;
+}
+.box{
+    height: 90px;
+}
+.br1{
+    height: 96px;
+}
+.br2{
+    height: 111px;
+}
+.delete{
+    position: relative;
+    top: -10px;
+    left:8px;
+}
+.del1{
+    top: -15px;
+}
+.del2{
+    top: -20px;
+}
+.buttonEdiClass{
+    position: relative;
+    left:8px;
+}

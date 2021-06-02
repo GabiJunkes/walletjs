@@ -1,0 +1,28 @@
+body, html {  
+    background-color: #4e4f50 !important;
+} 
+
+#entries{
+    height: 650px !important;
+    overflow: scroll;
+}
+#modalEntries{
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.tag .is-link{
+    cursor: pointer;
+}
+#entries::-webkit-scrollbar{
+    display: none;
+}
+#modalEntries::-webkit-scrollbar{
+    display: none;
+}
+.delete {
+    position: relative;
+    top: -10px;
+}
+.seta {
+    margin-left: 2px;
+}

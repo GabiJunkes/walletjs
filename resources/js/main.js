@@ -64,25 +64,34 @@ let loadTable = async (data) => {
     }else if(data[i].tipo=="eD"){
       tipo = "link"
     }
-    html += `<div class="box is-dark">
+    let quebraLinha = ""
+    let quebraLinhaDel = ""
+    if (data[i].descricao.length>=44){
+      data[i].descricao = [data[i].descricao.slice(0, 44), "<br>", data[i].descricao.slice(44)].join('')
+      quebraLinha = "br1";
+      quebraLinhaDel = "del1";
+    }
+    if (data[i].descricao.length>=88){
+      data[i].descricao = [data[i].descricao.slice(0, 88), "<br>", data[i].descricao.slice(88)].join('')
+      quebraLinha = "br2";
+      quebraLinhaDel = "del2";
+    }
+    let buttonEmp = "";
+    if (data[i].tipo=="eA"){
+      buttonEmp = `<div class="buttonEmpCan"><span onclick="pagarEmp(${i})" style="cursor: pointer;" class="tag is-primary">Quitar</span></div>`;
+    }
+    html += `<div class="box is-dark ${quebraLinha}">
     <div class="level is-mobile">
     <div class="level-left">
     <div class="level-item has-text-left ml-2">
     <div>
-    <p class="subtitle is-7 mt-1">`;
-    if (data[i].descricao.length>=44){
-      data[i].descricao = [data[i].descricao.slice(0, 44), "<br>", data[i].descricao.slice(44)].join('')
-    }
-    if (data[i].descricao.length>=88){
-      data[i].descricao = [data[i].descricao.slice(0, 88), "<br>", data[i].descricao.slice(88)].join('')
-    }
-    html += `${data[i].descricao} </div>
+    <p class="subtitle is-7">${data[i].descricao} </div>
     </div>
   </div>
   <div class="level-right">
     <div class="level-item">
       <div>
-        <button onclick="${funcStringExcluir}" class="delete is-small"></button>
+        <button onclick="${funcStringExcluir}" class="delete is-small ${quebraLinhaDel}"></button>
       </div>
     </div>
   </div>
@@ -98,7 +107,8 @@ let loadTable = async (data) => {
   </div>
   <div class="level-right">
       <div class="level-item">
-        <div>
+        ${buttonEmp}
+        <div class="buttonEdiClass">
           <span onclick="${funcStringEditar}" style="cursor: pointer;" class="tag is-info">Editar</span>
         </div>
       </div>
@@ -228,7 +238,7 @@ let openModal = async (id, daOnde) => {
           <select id="tipoInput">
             <option selected value="+">Adicionar</option>
             <option value="-">Remover</option>
-            <option value="D">Emprestar</option>
+            <option value="eA">Emprestar</option>
           </select>
         </div>
           <span class="icon is-small is-left">
@@ -305,6 +315,25 @@ let ediEnt = async (id) => {
         dataJson["real"][i].descricao=desc;
         break;
       }
+    }
+    await saveData(dataJson);
+    await start();
+    closeModal();
+    
+  }catch(e){
+    alert("Falha ao editar registro!");
+  }
+
+}
+
+let pagarEmp = async (i) => {
+
+  try{
+
+    let data = await getData();
+    let dataJson = await JSON.parse(data);
+    if (dataJson["real"][i].tipo=="eA"){
+      dataJson["real"][i].tipo="eD";
     }
     await saveData(dataJson);
     await start();
