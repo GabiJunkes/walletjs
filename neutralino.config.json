@@ -16,7 +16,7 @@
       "height": 800,
       "fullScreen": false,
       "alwaysOnTop": false,
-      "icon": "/resources/icons/appIcon.png",
+      "icon": "/resources/icons/wallet.png",
       "enableInspector": false,
       "borderless": true,
       "maximize": false

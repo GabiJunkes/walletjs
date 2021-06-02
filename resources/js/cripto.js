@@ -76,6 +76,7 @@ let loadTable = async (data) => {
   for (let i=0;i<coins.length;i++){
     let funcStringExcluir = `openModal('${coins[i].symbol}', 'excluirCoin')`
     let tag = "success";
+    let arrow = "up";
     let price = coins[i].lastPrice;
     let dif = dataAtual - new Date(coins[i].lastPriceDate);
     dif = Math.round(((dif % 86400000) % 3600000) / 60000);
@@ -88,6 +89,7 @@ let loadTable = async (data) => {
     let lucro = valorAtual-valorPago;
     if (lucro<0){
       tag = "danger";
+      arrow = "down";
     }
     html += `
     <div class="box is-dark">
@@ -104,7 +106,7 @@ let loadTable = async (data) => {
             <p class="subtitle is-7">R$${valorAtual.toFixed(2)}</p>
         </div>
         <div class="column is-1" style="position: relative;left: -35px;top: 10px;">
-          <span class="tag is-${tag} is-small mt-1">R$${lucro.toFixed(1)}<ion-icon class="seta" name="caret-up-outline"></ion-icon></span>
+          <span class="tag is-${tag} is-small mt-1">R$${lucro.toFixed(1)}<ion-icon class="seta" name="caret-${arrow}-outline"></ion-icon></span>
         </div>
         <div class="column is-1">
           <button onclick="${funcStringExcluir}" class="delete is-small"></button>
