@@ -51,6 +51,7 @@ let bulmaModalLogic = () => {
 let loadTable = async (data) => {
 
   let table = document.getElementById("entries");
+  table.innerHTML = "";
   let html = ""
   let total = 0.00;
   for (let i=data.length-1;i>=0;i--){
@@ -80,48 +81,51 @@ let loadTable = async (data) => {
     if (data[i].tipo=="eA"){
       buttonEmp = `<div class="buttonEmpCan"><span onclick="pagarEmp(${i})" style="cursor: pointer;" class="tag is-primary">Quitar</span></div>`;
     }
-    html += `<div class="box is-dark ${quebraLinha}">
+
+    let row = document.createElement('div');
+    row.id = `row${data[i].id}`;
+    row.className = `box is-dark ${quebraLinha}`;
+    row.innerHTML = `
     <div class="level is-mobile">
-    <div class="level-left">
-    <div class="level-item has-text-left ml-2">
-    <div>
-    <p class="subtitle is-7">${data[i].descricao} </div>
-    </div>
-  </div>
-  <div class="level-right">
-    <div class="level-item">
-      <div>
-        <button onclick="${funcStringExcluir}" class="delete is-small ${quebraLinhaDel}"></button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="level is-mobile">
-  <div class="level-left">
-    <div class="level-item has-text-left ml-2">
-      <div>
-        <span class="tag is-${tipo} mr-2">R$${data[i].valor}</span>
-        <span class="tag">${data[i].data}</span>
-      </div>
-    </div>
-  </div>
-  <div class="level-right">
-      <div class="level-item">
-        ${buttonEmp}
-        <div class="buttonEdiClass">
-          <span onclick="${funcStringEditar}" style="cursor: pointer;" class="tag is-info">Editar</span>
+      <div class="level-left">
+        <div class="level-item has-text-left ml-2">
+          <div>
+            <p class="subtitle is-7">${data[i].descricao} </div>
+          </div>
+        </div>
+      <div class="level-right">
+        <div class="level-item">
+          <div>
+            <button onclick="${funcStringExcluir}" class="delete is-small ${quebraLinhaDel}"></button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>`;
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item has-text-left ml-2">
+          <div>
+            <span class="tag is-${tipo} mr-2">R$${data[i].valor}</span>
+            <span class="tag">${data[i].data}</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          ${buttonEmp}
+          <div class="buttonEdiClass">
+            <span onclick="${funcStringEditar}" style="cursor: pointer;" class="tag is-info">Editar</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
     data[i].valor = data[i].valor.replace(",", ".");
     if (data[i].tipo=="eD") {
       data[i].valor=0
     }
-    total+= (data[i].tipo=="+") ? Number(data[i].valor) : Number(data[i].valor*-1);    
+    total+= (data[i].tipo=="+") ? Number(data[i].valor) : Number(data[i].valor*-1);
+    table.appendChild(row);
   }
-  table.innerHTML=html
   
   let labelTotal = document.getElementById("totalReal");
   labelTotal.innerText = "R$"+Number(total).toFixed(2);
@@ -357,6 +361,8 @@ let deleteEnt = async (id) => {
       }
     }
     await saveData(dataJson);
+    let row = document.getElementById("row"+id);
+    row.parentNode.removeChild(row);
     await start();
     closeModal();
     
