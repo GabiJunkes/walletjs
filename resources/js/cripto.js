@@ -330,10 +330,10 @@ let openModal = async (id, daOnde) => {
       }
     }
     if (cont>4){cont=4;}
-    desc = `<div id="modalEntries" style="height: ${75*cont+20}px;">`;
+    desc = `<div id="modalEntries" style="height: ${75*cont+05}px;">`;
     for (let i=0;i<arrayIndex.length;i++){
       desc += `
-      <div class="columns is-mobile" id="row${data["cripto"][arrayIndex[i]].id}">
+      <div class="columns is-mobile" id="row${data["cripto"][arrayIndex[i]].id}" style="height: 78px !important;">
         <div class="column is-4">
           <div class="field"><label class="label is-small ml-1">Quantidade</label><p class="control has-icons-left">
             <input id="quantInput${data["cripto"][arrayIndex[i]].id}" class="input is-small is-rounded" type="text" placeholder="0.00000000" value="${data["cripto"][arrayIndex[i]].quant}"><span class="icon is-small is-left">
@@ -391,19 +391,20 @@ let openModal = async (id, daOnde) => {
             </span></div>
           </div>
         </div>
-      </div><!--row-0-->
-      <div id="buttonRow" class="columns is-mobile" style="height: 25px; position: relative; top: -15px;">
-        <div class="column is-4">
-          <span onclick="addRow()" style="cursor: pointer;" class="icon has-text-link">
-            <ion-icon  name="add-circle-outline"></ion-icon>
-          </span>
-          <span onclick="delLastRow()" style="cursor: pointer;" class="icon has-text-danger">
-            <ion-icon name="close-circle-outline"></ion-icon>
-          </span>
-        </div>
+      </div>
+    </div>
+    <div id="buttonRow" class="columns is-mobile" style="height: 25px; position: relative; top: 10px;">
+      <div class="column is-4">
+        <span onclick="addRow()" style="cursor: pointer;" class="icon has-text-link">
+          <ion-icon  name="add-circle-outline"></ion-icon>
+        </span>
+        <span onclick="delLastRow()" style="cursor: pointer;" class="icon has-text-danger">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </span>
       </div>
     </div>
     <input id="delCoins" type="hidden">
+    <input id="coinContRowToAdd" value="0" type="hidden">
     <input id="coinCont" value="${arrayIndex.length+1}" type="hidden">`;
     buttonFunc = `'saveCoins("${id}")'`
   }
@@ -422,42 +423,36 @@ let openModal = async (id, daOnde) => {
 
 let addRow = async () => {
 
-  let html = document.getElementById("modalEntries").innerHTML;
-  let cont = 0;
-  let achou = 0;
-  do{
-    achou = html.indexOf(`<!--row-${cont}-->`);
-    cont++;
-  }while (achou !=-1);
-  cont--;
-  let string = `
-  <div class="columns is-mobile" id="row-${cont}">
-    <div class="column is-4">
-      <div class="field"><label class="label is-small ml-1">Quantidade</label><p class="control has-icons-left">
-        <input id="quantInput-${cont}" class="input is-small is-rounded" type="text" placeholder="0.00000000" ><span class="icon is-small is-left">
-        <ion-icon name="logo-bitcoin"></ion-icon></span></p>
-      </div>
+  let cont = Number(document.getElementById("coinContRowToAdd").value);
+  let row = document.createElement('div');
+  row.id = `row-${cont}`;
+  row.className = "columns is-mobile"
+  row.innerHTML = `
+  <div class="column is-4">
+    <div class="field"><label class="label is-small ml-1">Quantidade</label><p class="control has-icons-left">
+      <input id="quantInput-${cont}" class="input is-small is-rounded" type="text" placeholder="0.00000000" ><span class="icon is-small is-left">
+      <ion-icon name="logo-bitcoin"></ion-icon></span></p>
     </div>
-    <div class="column is-4">
-      <div class="field"><label class="label is-small ml-1">Valor</label><p class="control has-icons-left">
-        <input id="valorInput-${cont}" class="input is-small is-rounded" type="text" placeholder="Valor pago" ><span class="icon is-small is-left">
-        <ion-icon name="cash-outline"></ion-icon></span></p>
-      </div>
+  </div>
+  <div class="column is-4">
+    <div class="field"><label class="label is-small ml-1">Valor</label><p class="control has-icons-left">
+      <input id="valorInput-${cont}" class="input is-small is-rounded" type="text" placeholder="Valor pago" ><span class="icon is-small is-left">
+      <ion-icon name="cash-outline"></ion-icon></span></p>
     </div>
-    <div class="column is-4">
-      <div class="field"><label class="label is-small ml-1">Tipo</label><div class="control has-icons-left">
-      <div class="select is-small is-rounded">
-        <select id="tipoInput-${cont}">
-          <option selected value="+">Add</option>
-          <option value="-">Rem</option>
-        </select>
-      </div>
-        <span class="icon is-small is-left">
-          <ion-icon name="settings-outline"></ion-icon>
-        </span></div>
-      </div>
+  </div>
+  <div class="column is-4">
+    <div class="field"><label class="label is-small ml-1">Tipo</label><div class="control has-icons-left">
+    <div class="select is-small is-rounded">
+      <select id="tipoInput-${cont}">
+        <option selected value="+">Add</option>
+        <option value="-">Rem</option>
+      </select>
     </div>
-  </div><!--row-${cont}-->
+      <span class="icon is-small is-left">
+        <ion-icon name="settings-outline"></ion-icon>
+      </span></div>
+    </div>
+  </div>
   `;
 
   let coinCont = document.getElementById("coinCont").value;
@@ -465,38 +460,32 @@ let addRow = async () => {
   if (Number(coinCont)+1>4){
     coinCont=3;
   }
-  document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)+1)+20}px !important;`;
+  document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)+1)+05}px !important;`;
+  let coinContRowToAdd = document.getElementById("coinContRowToAdd");
+  coinContRowToAdd.value = Number(coinContRowToAdd.value)+1;
 
   let modal = document.getElementById("modalEntries");
-  let index = html.indexOf('<div id="buttonRow"');
-  modal.innerHTML = html.slice(0, index) + string + html.slice(index);
+  modal.appendChild(row);
 
 }
 
 let delLastRow = async () => {
 
-  let html = document.getElementById("modalEntries").innerHTML;
-  let cont = 0;
-  let achou = 0;
-  do{
-    achou = html.indexOf(`<!--row-${cont}-->`);
-    cont++;
-  }while (achou !=-1);
-  cont--;
-  if (cont>1){
+  let cont = Number(document.getElementById("coinContRowToAdd").value);
+
+  if (cont>0){
 
     let coinCont = document.getElementById("coinCont").value;
     document.getElementById("coinCont").value = (Number(coinCont)-1);
     if(Number(coinCont)-1>4){
       coinCont=5;
     }
-    document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)-1)+20}px !important;`;
+    document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)-1)+05}px !important;`;
 
     let row = document.getElementById(`row-${cont-1}`);
     row.parentNode.removeChild(row);
-    let modal = document.getElementById("modalEntries");
-    html = document.getElementById("modalEntries").innerHTML;
-    modal.innerHTML = html.replace(`<!--row-${cont-1}-->`,"");
+    let coinContRowToAdd = document.getElementById("coinContRowToAdd");
+    coinContRowToAdd.value = Number(coinContRowToAdd.value)-1;
   }
 
 }
@@ -508,7 +497,7 @@ let delRow = async (id) => {
   if (Number(coinCont)-1>4){
     coinCont=5;
   }
-  document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)-1)+20}px !important;`;
+  document.getElementById("modalEntries").style=`height: ${75*(Number(coinCont)-1)+05}px !important;`;
 
   let row = document.getElementById(`row${id}`);
   row.parentNode.removeChild(row);
